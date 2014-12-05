@@ -17,13 +17,7 @@ struct hostent *host;
 
 char zap=1;
 
-struct structTep{
-float t1;
-float t2;
-float t3;
 float tout;
-};
-struct structTep teplota={20,20,20,25};
 int moznosti=0;
 void sigend(int param);
 void sigpipe(int param);
@@ -61,34 +55,9 @@ int main(int argc,char *argv[]){
         printf("Klient c.%d pripojeny(%s,%d)\n",por,ip,port);
 
 	while(zap){
-		printf("\033[2J");
-      		printf("\033[H");
-		printf("Vyber si z moznosti\n");
-		printf("1. Nastavit teplotu v prvej izbe(%F C)\n",teplota.t1);
-		printf("2. Nastavit teplotu v druhej izbe(%F C)\n",teplota.t2);
-		printf("3. Nastavit teplotu v tretej izbe(%F C)\n",teplota.t3);
-		printf("4. Nastavit teplotu vonku(%F C) \n",teplota.tout);
-		scanf("%d",&moznosti);
-		fflush(stdin);
-		switch(moznosti){
-			case 1:
-                                printf("Zadaj teplotu: ");
-                                scanf("%f",&teplota.t1);
-				break;
-			case 2:
-                                printf("Zadaj teplotu: ");
-                                scanf("%f",&teplota.t2);
-				break;
-			case 3:
-                                printf("Zadaj teplotu: ");
-                                scanf("%f",&teplota.t3);
-				break;
-			case 4:
-				printf("Zadaj teplotu: ");
-				scanf("%f",&teplota.tout);
-				break;
-		}
-		send(sockFileDesc,&teplota, sizeof(teplota),0);
+        	printf("Zadaj vonkajsiu teplotu: ");
+                scanf("%f",&tout);
+		send(sockFileDesc,&tout, sizeof(tout),0);
 		fflush(stdin);
 	}
 
