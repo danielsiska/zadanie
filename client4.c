@@ -15,7 +15,7 @@ int sockFileDesc;
 struct sockaddr_in adresa;
 struct hostent *host;
 
-char zap=1;
+char on=1;
 
 float tout;
 int moznosti=0;

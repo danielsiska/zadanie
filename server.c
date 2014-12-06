@@ -80,25 +80,19 @@ int main(int argc,char *argv[]){
 			printf("Pripojeny klient c:%d\n",por);			
 			switch(por){
 				case 1:	while(zap){
-                                                //send(client,&tout, sizeof(tout),0);//odosli teplotu klientovi
 						if (msgrcv(msqid, &tout, sizeof(tout), 1, 0) < 0) { perror("msgrcv"); exit(1); }
-                                                printf("1. %F\n",tout.tout);
 						send(client,&tout.tout, sizeof(tout.tout),0);
                                         }break;
 				break;
 				case 2:		
                                         while(zap){
-                                                //send(client,&tout, sizeof(tout),0);//odosli teplotu klientovi
                                                 if (msgrcv(msqid1, &tout, sizeof(tout), 1, 0) < 0) { perror("msgrcv"); exit(1); }
-						printf("2. %F\n",tout.tout);
 						send(client,&tout.tout, sizeof(tout.tout),0);
                                         }break;
 				break;
 				case 3:
 					while(zap){
-						//send(client,&tout, sizeof(tout),0);//odosli teplotu klientovi
 						if (msgrcv(msqid2, &tout, sizeof(tout), 1, 0) < 0) { perror("msgrcv"); exit(1); }
-						printf("3. %F\n",tout.tout);
 						send(client,&tout.tout, sizeof(tout.tout),0);
 					}break;
 				
@@ -106,7 +100,6 @@ int main(int argc,char *argv[]){
 					tout.type = 1;
 					while(zap){// klient nastavovanie vonkajsej teploty
 						recv(client,&tout.tout, sizeof(tout.tout),0);
-						printf("%f\n",tout.tout);
 						if (msgsnd(msqid, &tout, sizeof(tout), IPC_NOWAIT) < 0) { perror("msgsnd"); exit(1); }
 						if (msgsnd(msqid1, &tout, sizeof(tout), IPC_NOWAIT) < 0) { perror("msgsnd"); exit(1); }
 						if (msgsnd(msqid2, &tout, sizeof(tout), IPC_NOWAIT) < 0) { perror("msgsnd"); exit(1); }
