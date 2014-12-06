@@ -50,18 +50,20 @@ void semafor_unlock(){
 	semop(sem_id, &param_sem, 1);
 }
 
+void strata_spoj(int param);
+
 void* nacitaj_teplotu(void *vstup){
 	while(on){
 		semafor_lock();
-		recv(sockFileDesc,&teplota_vonku, sizeof(teplota_vonku),0);//primanie vonkajsej teploty so serveru
+		if(recv(sockFileDesc,&teplota_vonku, sizeof(teplota_vonku),0)==0)strata_spoj(0);//primanie vonkajsej teploty so serveru
 		semafor_unlock();
+		
 	}
 }
 
 
 void vypocet(int signal , siginfo_t * siginfo, void * ptr);
 int kbhit(void);
-void strata_spoj(int param);
 void ctrlc(int param);
 
 int main(int argc,char *argv[]){
@@ -71,7 +73,7 @@ int main(int argc,char *argv[]){
 	struct hostent *host;
 
  	if(argc < 2)	  { perror("Error, nebola zadana IP a port\n"); exit(0);}
-	else if (argc > 2){ perror("Error, prilis mnoho parametrov\n"); exit(0);}
+	else if (argc > 3){ perror("Error, prilis mnoho parametrov\n"); exit(0);}
 	ip = &argv[1][0];	//ip s argumentov
 	port = atoi(argv[2]);	// port s argumentov
 	
@@ -88,6 +90,7 @@ int main(int argc,char *argv[]){
 	signal(SIGINT, ctrlc);			//Ctrl+c
 	signal(SIGPIPE, strata_spoj);		//Strata spojenia
   
+	
         printf("Izba %d. pripojena na IP(%s),PORT(%d)\n",por,ip,port);
 	
 	//Vytvorenie vlakna pre primanie vonkajsej teploty
@@ -144,9 +147,9 @@ int main(int argc,char *argv[]){
 			printf("teplota ziadana:\t\t\t%f\n",teplota_ziad);
                 	printf("teplota vonku:\t\t\t\t%f\n",teplota_vonku);
                 	printf("Nastav ziadanu teplotu na:\t\t%s\n",buff);
-			usleep(5000);
         	}
 		semafor_unlock();
+                usleep(500000);
 	}
 }
 void vypocet(int signal , siginfo_t * siginfo, void * ptr){//obsluzna funkcia casovaca

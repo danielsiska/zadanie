@@ -8,7 +8,7 @@ client2:client2.c
 client3:client3.c
 	gcc client3.c -lm -lrt -lpthread -o client3
 client4:client4.c
-	gcc client4.c -o client4
+	gcc client4.c -lpthread -o client4
 
 clean:
 	rm -f client1
